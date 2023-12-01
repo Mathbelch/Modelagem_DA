@@ -28,12 +28,17 @@ resolucao = Models.modelo_analitico(t_plot, paras, False, None) #[sA, Sb, Sc, Sd
     
 R2_S_P = Models.modelo_analitico(t, paras, True, data)
 
+data_multivar_SP = [data_fit_S, data_fit_P]
 data_multivar_SPI = [data_fit_S, data_fit_I, data_fit_P]
 
-obj = Otimizador.obj_modelo_analitico_SPI(paras, data_multivar_SPI, t)
 
-print(f'Valor da função objetivo para os parâmetros otimizados: {np.sum(np.square(obj))}\n')
+objP = Otimizador.obj_modelo_analitico_P(paras, data_fit_P['concentração'], t)
+objSP = Otimizador.obj_modelo_analitico_SP(paras, data_multivar_SP, t)
+objSPI = Otimizador.obj_modelo_analitico_SPI(paras, data_multivar_SPI, t)
 
+print(f'Valor da função objetivo P para os parâmetros otimizados: {np.sum(np.square(objP))}\n')
+print(f'Valor da função objetivo SP para os parâmetros otimizados: {np.sum(np.square(objSP))}\n')
+print(f'Valor da função objetivo SPI para os parâmetros otimizados: {np.sum(np.square(objSPI))}\n')
 
 
 plt.plot(t, data_fit_P['concentração'], 'rx', label=f'$S_D  exp.$')
@@ -92,7 +97,6 @@ paras.add('K2', value = 1.84702752e-02 * 2, min=0)
 paras.add('K3', value=1.84702752e-02 * 3, min=0)
 paras.add('alpha', value=0.5, min=0) # [-]
 
-data_multivar_SP = [data_fit_S, data_fit_P]
 res_otim_SP = lm.minimize(Otimizador.obj_modelo_analitico_SP, paras, 'leastsq', args=(data_multivar_SP, t))
 
 print('\nResultado da otimização multivariada de SP\n')
@@ -139,7 +143,6 @@ paras.add('alpha', value=0.5, min=0) # [-]
 # paras.add('alpha', value=0.3532, vary=False) # [-]
 
 
-data_multivar_SPI = [data_fit_S, data_fit_I, data_fit_P]
 
 
 res_otim_SPI = lm.minimize(Otimizador.obj_modelo_analitico_SPI, paras, 'leastsq', args=(data_multivar_SPI, t))

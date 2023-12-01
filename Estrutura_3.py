@@ -31,6 +31,19 @@ sAr, sAl, sB, sC, sD, t_sim, sAt = sim
 
 R2_S_P = Models.wrapper_model_2([0, 240], condicoes_iniciais, paras, t, True, data)
 
+objP = Otimizador.obj_wrapper_model_2(paras, data_fit_P['concentração'], [0, 240], condicoes_iniciais, t)
+print(f'Valor da função objetivo P para os parâmetros otimizados em Gouveia et al.: {np.sum(np.square(objP))}\n')
+
+data_multivar_SP = [data_fit_S, data_fit_P]
+objSP = Otimizador.obj_wrapper_model_2_SP(paras, data_multivar_SP, [0, 240], condicoes_iniciais, t)
+print(f'Valor da função objetivo SP para os parâmetros otimizados em Gouveia et al.: {np.sum(np.square(objSP))}\n')
+
+data_multivar_SPI = [data_fit_S, data_fit_I, data_fit_P]
+objSPI = Otimizador.obj_wrapper_model_2_SPI(paras, data_multivar_SPI, [0, 240], condicoes_iniciais, t)
+print(f'Valor da função objetivo SPI para os parâmetros otimizados em Gouveia et al.: {np.sum(np.square(objSPI))}\n')
+
+
+
 # Plotagem:
 plt.plot(t_sim, sAr, 'c', label='$S_{A,R}$')
 plt.plot(t_sim, sAl, 'aquamarine', label='$S_{A,L}$')
@@ -95,9 +108,8 @@ paras.add('k2',    value = 1.84702752e-02 * 2, min=0) #kgDQO_X/kgDQO_S
 paras.add('k3',    value = 1.84702752e-02 * 3, min=0)
 
 condicoes_iniciais = [paras['sAr_0'].value, paras['sAl_0'].value, 0., 0.]
-data_multivar_SP = [data_fit_S, data_fit_P]
 print(np.shape(data_multivar_SP))
-res_otimizacao_multivar_SP = lm.minimize(Otimizador.obj_wrapper_model_2_SP, paras, 'least_squares', args=(data_multivar_SP, [0, 240], condicoes_iniciais, t))
+res_otimizacao_multivar_SP = lm.minimize(Otimizador.obj_wrapper_model_2_SP, paras, 'leastsq', args=(data_multivar_SP, [0, 240], condicoes_iniciais, t))
 
 print('\nResultado da otimização multivariada de SP\n') 
 
@@ -140,8 +152,7 @@ paras.add('k2',    value = 1.84702752e-02 * 2, min=0) #kgDQO_X/kgDQO_S
 paras.add('k3',    value = 1.84702752e-02 * 3, min=0)
 
 condicoes_iniciais = [paras['sAr_0'].value, paras['sAl_0'].value, 0., 0.]
-data_multivar_SPI = [data_fit_S, data_fit_I, data_fit_P]
-res_otimizacao_multivar_SPI = lm.minimize(Otimizador.obj_wrapper_model_2_SPI, paras, 'least_squares', args=(data_multivar_SPI, [0, 240], condicoes_iniciais, t))
+res_otimizacao_multivar_SPI = lm.minimize(Otimizador.obj_wrapper_model_2_SPI, paras, 'leastsq', args=(data_multivar_SPI, [0, 240], condicoes_iniciais, t))
 
 print('\nResultado da otimização multivariada de SPI\n')
 
@@ -164,7 +175,7 @@ plt.plot(t_sim, sAr, 'c', label='$S_{A,R}$')
 plt.plot(t_sim, sAl, 'aquamarine', label='$S_{A,L}$')
 plt.plot(t_sim, sAt, 'b', label=f'$S_A (R^2={R2_S_P_ajuste_multivar[0]:.3f})$')
 plt.plot(t_sim, sB, 'y', label='$S_B$')
-plt.plot(t_sim, sC, 'g', label=f'$S_C (R^2={R2_S_P_ajuste_multivar[1]:.3f}$')
+plt.plot(t_sim, sC, 'g', label=f'$S_C (R^2={R2_S_P_ajuste_multivar[1]:.3f})$')
 plt.plot(t_sim, sD, 'r', label=f'$S_D (R^2={R2_S_P_ajuste_multivar[2]:.3f})$')
 plt.legend(fontsize=15)
 plt.xlabel('t - dias', fontsize=15)

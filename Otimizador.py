@@ -37,10 +37,10 @@ def obj_modelo_analitico_SPI (params, data, t):
     
 
 def obj_wrapper_model_2 (params, data, t, x, t_compute):
-    print(params.valuesdict())
+   
     sim = Models.wrapper_model_2(t, x, params, t_compute, Rsquare=False, data=None)
     res = data - sim[4]
-   #  res_norm = res/(max(data) - min(data))
+   
     
     return res
  

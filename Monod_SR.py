@@ -8,9 +8,9 @@ import Otimizador
 
 # Dados experimentais:
 parametrosDadosXlsx:list[int] = [0, 240, 25, 3]
-data_fit_P = Tools.ajustarXlsx("../xlsx1/dados_gouveia_rao_produto.csv", parametrosDadosXlsx)
-data_fit_S = Tools.ajustarXlsx("../xlsx1/dados_gouveia_rao_substrato.csv", parametrosDadosXlsx)
-data_fit_I = Tools.ajustarXlsx("../xlsx1/dados_gouveia_rao_AGV.csv", parametrosDadosXlsx)
+data_fit_P = Tools.ajustarXlsx("./xlsx1/dados_gouveia_rao_produto.csv", parametrosDadosXlsx)
+data_fit_S = Tools.ajustarXlsx("./xlsx1/dados_gouveia_rao_substrato.csv", parametrosDadosXlsx)
+data_fit_I = Tools.ajustarXlsx("./xlsx1/dados_gouveia_rao_AGV.csv", parametrosDadosXlsx)
 
 
 data = [data_fit_S,  data_fit_P]

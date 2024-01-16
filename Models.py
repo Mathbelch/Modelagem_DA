@@ -102,6 +102,7 @@ def modelo_analitico(t, params, Rsquare, data):
    sim_sc = SC(t, S_max, alpha, Kl, Kr, K2, K3)
    sim_sd = SD(t, S_max, Kl, Kr, K2, K3, alpha)
    
+   
    if (Rsquare == True):
       if np.shape(data)[0] == 3:
          R2_S = Tools.r2(np.array(data[0]['concentração']), sim_sa)
@@ -191,10 +192,11 @@ def model_monod_sr (t, x, params, t_compute, Rsquare, data):
          Yxs = params['Yxs'].value #kg_DQO_X/kg_DQO_S
          Yps = params['Yps'].value #kg_DQO_P/kg_DQO_S
          kd = params['kd'].value #dia^-1
-         D = params['D'].value #dia^-1         
+         D = params['D'].value #dia^-1   
+         X0 = params['X0'].value      
       
       except KeyError:
-         S_in, umax, Ks, Yxs, Yps, kd, D = params
+         S_in, umax, Ks, Yxs, Yps, kd, D, X0 = params
       
       ##definindo a reação:
       mu = umax*S/(Ks + S) #dia^-1

@@ -24,6 +24,7 @@ paras.add('K2', value=0.1274, vary=False) # dia^-1
 paras.add('K3', value=0.1181, vary=False) # dia^-1
 paras.add('alpha', value=0.3532, vary=False) # [-]
 
+
 resolucao = Models.modelo_analitico(t_plot, paras, False, None) #[sA, Sb, Sc, Sd]
     
 R2_S_P = Models.modelo_analitico(t, paras, True, data)
@@ -64,7 +65,14 @@ paras.add('K2', value = 1.84702752e-02 * 2, min=0)
 paras.add('K3', value=1.84702752e-02 * 3, min=0)
 paras.add('alpha', value=0.5, min=0) # [-]
 
-res_otim_P = lm.minimize(Otimizador.obj_modelo_analitico_P, paras, 'leastsq', args=(data_fit_P['concentração'], data_fit_P['tempo']), nan_policy='omit')
+# paras.add('S_max', value=36., min=0)
+# paras.add('Kl', value=0.0012, min=0) 
+# paras.add('Kr', value=0.017, min=0) 
+# paras.add('K2', value = 0.008, min=0) 
+# paras.add('K3', value=0.4, min=0)
+# paras.add('alpha', value=0.3, min=0) # [-]
+
+res_otim_P = lm.minimize(Otimizador.obj_modelo_analitico_P, paras, 'ampgo', args=(data_fit_P['concentração'], data_fit_P['tempo']), nan_policy='omit')
 print('\nResultado da otimização de P\n')
 
 print(f'Valor da função objetivo para os parâmetros otimizados: {np.sum(np.square(res_otim_P.residual))}\n')
@@ -90,14 +98,14 @@ plt.show()
 # Estimação multivariável de parâmetros SP:
 
 paras = lm.Parameters()
-paras.add('S_max', value=36.55, min=0)
-paras.add('Kl', value=1.84702752e-02/2, min=0) 
-paras.add('Kr', value=1.84702752e-02, min=0) 
-paras.add('K2', value = 1.84702752e-02 * 2, min=0) 
-paras.add('K3', value=1.84702752e-02 * 3, min=0)
-paras.add('alpha', value=0.5, min=0) # [-]
+paras.add('S_max', value=20, min=0)
+paras.add('Kl', value=1.8, min=0) 
+paras.add('Kr', value=1., min=0) 
+paras.add('K2', value = 0.1, min=0) 
+paras.add('K3', value=10, min=0)
+paras.add('alpha', value=0.1, min=0) # [-]
 
-res_otim_SP = lm.minimize(Otimizador.obj_modelo_analitico_SP, paras, 'leastsq', args=(data_multivar_SP, t))
+res_otim_SP = lm.minimize(Otimizador.obj_modelo_analitico_SP, paras, 'ampgo', args=(data_multivar_SP, t), nan_policy='omit')
 
 print('\nResultado da otimização multivariada de SP\n')
 
@@ -134,6 +142,7 @@ paras.add('K2', value = 1.84702752e-02 * 2, min=0)
 paras.add('K3', value=1.84702752e-02 * 3, min=0)
 paras.add('alpha', value=0.5, min=0) # [-]
 
+
 # paras = lm.Parameters()
 # paras.add('S_max', value=38.16, vary=False)
 # paras.add('Kl', value=1.84702752e-02/2, min=0) 
@@ -145,7 +154,7 @@ paras.add('alpha', value=0.5, min=0) # [-]
 
 
 
-res_otim_SPI = lm.minimize(Otimizador.obj_modelo_analitico_SPI, paras, 'leastsq', args=(data_multivar_SPI, t))
+res_otim_SPI = lm.minimize(Otimizador.obj_modelo_analitico_SPI, paras, 'ampgo', args=(data_multivar_SPI, t), nan_policy='omit')
 
 print('\nResultado da otimização multivariada SPI\n')
 

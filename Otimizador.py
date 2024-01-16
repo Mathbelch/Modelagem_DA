@@ -70,7 +70,9 @@ def obj_wrapper_model_2_SPI (params, data, t, x, t_compute):
 
 def obj_model_monod_P (params, data, t, x, t_compute):
     
-    sim = Models.model_monod_sr(t, x, params, t_compute, Rsquare=False, data=None)
+    init = [x[0], params['X0'].value, x[2]]
+    print(init)
+    sim = Models.model_monod_sr(t, init, params, t_compute, Rsquare=False, data=None)
     
     res_P = data[1]['concentração'] - sim[2]
     
@@ -78,6 +80,7 @@ def obj_model_monod_P (params, data, t, x, t_compute):
 
 
 def obj_model_monod_S (params, data, t, x, t_compute):
+    
     
     sim = Models.model_monod_sr(t, x, params, t_compute, Rsquare=False, data=None)
     
@@ -104,6 +107,14 @@ def obj_P_model_monod_sr_x (params, data, t, x, t_compute):
     res_P = data[1]['concentração'] - sim[2]
     
     return res_P
+
+def obj_S_model_monod_sr_x (params, data, t, x, t_compute):
+    
+    sim = Models.model_monod_sr_x(t, x, params, t_compute, Rsquare=False, data=None)
+    
+    res_S = data[0]['concentração'] - sim[0]
+    
+    return res_S
 
 def obj_SP_model_monod_sr_x (params, data, t, x, t_compute):
     
